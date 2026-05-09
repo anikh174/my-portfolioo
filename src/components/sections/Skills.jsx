@@ -28,13 +28,11 @@ const SkillIcon = ({ name, slug, color, delay }) => (
     className="group relative flex flex-col items-center"
   >
     <div className={`w-20 h-20 md:w-24 md:h-24 glass rounded-3xl flex items-center justify-center border border-white/10 transition-all duration-500 group-hover:border-primary/50 group-hover:shadow-[0_0_30px_rgba(var(--color-primary-rgb),0.2)]`}>
-      <Image 
+      <img 
         src={`https://cdn.simpleicons.org/${slug}/${color}`} 
         alt={name}
-        width={40}
-        height={40}
         className="w-10 h-10 transition-all duration-500 group-hover:scale-110"
-      />
+      />  
       
       {/* Dynamic Glow */}
       <div className="absolute inset-0 bg-primary/5 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
