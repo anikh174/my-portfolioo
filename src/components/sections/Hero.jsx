@@ -206,11 +206,9 @@ const Hero = () => {
                     className="w-12 h-12 glass rounded-2xl flex items-center justify-center border border-white/10 shadow-2xl group cursor-pointer hover:border-primary/50 transition-colors"
                   >
                     <div className="group-hover:scale-110 transition-transform duration-300">
-                      <Image 
+                      <img 
                         src={`https://cdn.simpleicons.org/${item.slug}/${item.color}`} 
                         alt={item.name}
-                        width={24}
-                        height={24}
                         className="w-6 h-6"
                       />
                     </div>
