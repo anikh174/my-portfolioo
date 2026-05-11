@@ -21,9 +21,9 @@ const Footer = () => {
 
           <div className="flex flex-col items-center gap-4">
             <div className="flex gap-6">
-              <a href="#" className="text-foreground/40 hover:text-primary transition-colors"><Github size={20} /></a>
-              <a href="#" className="text-foreground/40 hover:text-primary transition-colors"><Linkedin size={20} /></a>
-              <a href="#" className="text-foreground/40 hover:text-primary transition-colors"><MessageSquare size={20} /></a>
+              <a href="https://github.com/anikh174" className="text-foreground/40 hover:text-primary transition-colors"><Github size={20} /></a>
+              <a href="https://www.linkedin.com/in/anik-hossain174/" className="text-foreground/40 hover:text-primary transition-colors"><Linkedin size={20} /></a>
+              <a href="#contact" className="text-foreground/40 hover:text-primary transition-colors"><MessageSquare size={20} /></a>
             </div>
             <p className="text-xs text-foreground/20 flex items-center gap-1 uppercase tracking-[0.2em] font-bold">
               Designed & Built with <Heart size={10} className="text-red-500 fill-red-500" /> by Anik

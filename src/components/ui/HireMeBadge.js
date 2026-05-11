@@ -26,7 +26,7 @@ const HireMeBadge = () => {
             />
             <text className="text-[11px] font-bold uppercase tracking-[0.2em] fill-foreground/30 group-hover:fill-primary transition-colors">
               <textPath xlinkHref="#circlePath">
-                Available for Projects • Work With Me • 
+                Available For Hire!!
               </textPath>
             </text>
           </svg>
