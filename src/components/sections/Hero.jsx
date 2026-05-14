@@ -131,7 +131,7 @@ const Hero = () => {
                 {t("hero.cta_view")} <ArrowRight size={20} />
               </MagneticButton>
               <MagneticButton 
-                href="/cv.pdf" 
+                href="/MD_Anik_Resume.pdf" 
                 download
                 className="px-10 py-5 glass text-foreground rounded-2xl font-bold flex items-center gap-2 hover:bg-primary/10 transition-all border border-foreground/5 shadow-xl"
               >
