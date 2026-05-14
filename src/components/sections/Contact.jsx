@@ -106,8 +106,8 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="space-y-8"
           >
-            <div className="glass p-10 rounded-[3rem] border border-white/5">
-              <h3 className="text-2xl font-bold mb-8 flex items-center gap-3">
+            <div className="glass p-10 rounded-[3rem] border border-white/5 w-82 md:w-full">
+              <h3 className="md:text-2xl font-bold mb-8 flex items-center gap-3">
                 <MessageSquare className="text-primary" /> {t("contact.get_in_touch")}
               </h3>
               <p className="text-foreground/60 mb-10 leading-relaxed">
@@ -115,14 +115,14 @@ const Contact = () => {
               </p>
               
               <div className="space-y-6">
-                <ContactInfo icon={Mail} title="Email" value="hossainanik174@gmail.com" />
+                <ContactInfo icon={Mail} title="Email" value="hossainanik174@gmail.com"/>
                 <ContactInfo icon={Phone} title="Phone" value="+880 1518953763" />
-                <ContactInfo icon={MapPin} title="Location" value="Dhaka, Bangladesh" />
+                <ContactInfo icon={MapPin} title="Location" value="Dhaka, Bangladesh"/>
               </div>
 
               <div className="mt-12 pt-10 border-t border-white/10 flex items-center gap-6">
                 <span className="text-xs font-bold uppercase tracking-widest text-foreground/40">Follow Me:</span>
-                <div className="flex gap-4">
+                <div className="flex gap-4 w-40 md:w-full">
                   <a
                     href="https://github.com/anikh174"
                     target="_blank"
@@ -166,6 +166,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
+            className="w-82 md:w-full"
           >
             <div className="glass p-8 md:p-12 rounded-[3rem] border border-white/5 relative overflow-hidden min-h-[500px] flex flex-col justify-center">
               <AnimatePresence mode="wait">
