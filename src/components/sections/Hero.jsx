@@ -8,7 +8,7 @@ import { ArrowRight, Github, Linkedin, Facebook, Instagram, Download } from "luc
 
 const socials = [
   { icon: Github, href: "https://github.com/anikh174", label: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com/in/hossainanik", label: "LinkedIn" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/anik-hossain174", label: "LinkedIn" },
   { icon: Facebook, href: "https://www.facebook.com/anik.hossain.174", label: "Facebook" },
   { icon: Instagram, href: "https://www.instagram.com/ah_mekail", label: "Instagram" },
 ];
@@ -153,16 +153,23 @@ const Hero = () => {
 
             {/* Profile image — above orbit ring */}
             <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 lg:w-96 lg:h-96 z-10">
-              <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary/20 via-purple-500/10 to-transparent blur-2xl scale-110" />
-              <div className="relative w-full h-full rounded-[2.5rem] overflow-hidden border border-white/10">
-                <Image
-                  src="/image2.jpeg"
-                  alt="Anik Hossain"
-                  fill
-                  className="object-cover object-top"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent" />
+              {/* Animated gradient border */}
+              <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-primary via-purple-500 to-primary opacity-60 blur-sm" />
+              <div className="absolute inset-[3px] rounded-[2.35rem] bg-gradient-to-br from-primary/20 via-purple-500/10 to-transparent blur-xl scale-110" />
+              {/* Image container */}
+              <div className="relative w-full h-full rounded-[2.5rem] p-[3px] bg-gradient-to-br from-primary via-purple-500 to-primary">
+                <div className="relative w-full h-full rounded-[2.35rem] overflow-hidden bg-background">
+                  <Image
+                    src="/image2.jpeg"
+                    alt="Anik Hossain"
+                    fill
+                    sizes="(max-width: 640px) 16rem, (max-width: 768px) 18rem, (max-width: 1024px) 20rem, 24rem"
+                    className="object-cover object-top"
+                    priority
+                  />
+                  {/* Subtle inner glow */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/15 via-transparent to-transparent" />
+                </div>
               </div>
             </div>
           </motion.div>

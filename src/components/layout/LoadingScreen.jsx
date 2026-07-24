@@ -108,7 +108,8 @@ const LoadingScreen = ({ children }) => {
                     src="/image2.jpeg"
                     alt="Anik Hossain"
                     fill
-                    className="object-cover p-2"
+                    sizes="7rem"
+                    className="object-cover object-top"
                     priority
                   />
                 </div>

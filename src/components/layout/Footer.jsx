@@ -14,7 +14,7 @@ const navLinks = [
 
 const socials = [
   { icon: Github, href: "https://github.com/anikh174", label: "GitHub" },
-  { icon: Linkedin, href: "https://www.linkedin.com/in/hossainanik", label: "LinkedIn" },
+  { icon: Linkedin, href: "https://www.linkedin.com/in/anik-hossain174", label: "LinkedIn" },
   { icon: Facebook, href: "https://www.facebook.com/anik.hossain.174", label: "Facebook" },
   { icon: Instagram, href: "https://www.instagram.com/ah_mekail", label: "Instagram" },
 ];

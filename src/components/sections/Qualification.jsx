@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { GraduationCap, Calendar, School, MapPin, Award, Briefcase, Trophy, ExternalLink } from "lucide-react";
+import { GraduationCap, Calendar, School, MapPin, Award, Briefcase, Trophy, ExternalLink, X, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -59,18 +60,20 @@ const internships = [
 
 const certifications = [
   {
-    title: "Complete Web Development Course",
-    issuer: "Programming Hero",
-    date: "2026",
-    description: "Comprehensive full-stack web development training covering React, Node.js, Express, MongoDB, and modern deployment practices.",
-    credential: "#"
-  },
-  {
     title: "MERN Stack Internship Certificate",
     issuer: "BD Calling Academy",
     date: "2025",
     description: "Certified for completing a hands-on MERN stack internship with real-world project experience.",
-    credential: "#"
+    credential: "/bd_calling_academy_certificate.jpeg",
+    type: "image"
+  },
+  {
+    title: "Complete Web Development Course",
+    issuer: "Programming Hero",
+    date: "2026",
+    description: "Comprehensive full-stack web development training covering React, Node.js, Express, MongoDB, and modern deployment practices.",
+    credential: "/programming_hero_certificate.png",
+    type: "image"
   }
 ];
 
@@ -99,6 +102,7 @@ const achievements = [
 
 const Qualification = () => {
   const [activeTab, setActiveTab] = useState("education");
+  const [lightbox, setLightbox] = useState(null);
 
   return (
     <section id="qualification" className="py-24 relative">
@@ -252,7 +256,7 @@ const Qualification = () => {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.08 }}
-                    className="glass p-6 rounded-2xl group hover:border-primary/15 transition-all duration-300"
+                    className="glass p-6 rounded-2xl group hover:border-primary/15 transition-all duration-300 flex flex-col"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -265,12 +269,17 @@ const Qualification = () => {
                     </div>
                     <h3 className="text-base font-bold group-hover:text-primary transition-colors mb-1">{item.title}</h3>
                     <p className="text-xs text-foreground/40 font-medium mb-3">{item.issuer}</p>
-                    <p className="text-sm text-foreground/40 leading-relaxed mb-4">{item.description}</p>
-                    {item.credential && (
-                      <a href={item.credential} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:gap-2.5 transition-all">
+                    <p className="text-sm text-foreground/40 leading-relaxed mb-4 flex-1">{item.description}</p>
+                    {item.credential && item.credential !== "#" && (
+                      <button
+                        onClick={() => {
+                          if (item.type === "image") setLightbox(item);
+                          else window.open(item.credential, "_blank");
+                        }}
+                        className="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:gap-2.5 transition-all mt-auto"
+                      >
                         View Credential <ExternalLink size={12} />
-                      </a>
+                      </button>
                     )}
                   </motion.div>
                 ))}
@@ -296,6 +305,61 @@ const Qualification = () => {
               </div>
             )}
           </motion.div>
+        </AnimatePresence>
+
+        {/* Certificate Lightbox */}
+        <AnimatePresence>
+          {lightbox && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setLightbox(null)}
+                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[2000]"
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                className="fixed inset-4 sm:inset-8 md:inset-12 lg:inset-16 z-[2001] flex flex-col"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4 shrink-0">
+                  <div>
+                    <h3 className="text-sm font-bold text-white">{lightbox.title}</h3>
+                    <p className="text-xs text-white/50">{lightbox.issuer} — {lightbox.date}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <a href={lightbox.credential} download
+                      className="flex items-center gap-1.5 px-3 py-2 glass-dark rounded-lg text-xs font-semibold text-white/70 hover:text-white transition-colors">
+                      <Download size={13} /> Download
+                    </a>
+                    <button
+                      onClick={() => setLightbox(null)}
+                      className="w-9 h-9 glass-dark rounded-full flex items-center justify-center text-white/60 hover:text-white transition-colors"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Certificate image */}
+                <div className="flex-1 relative rounded-2xl overflow-hidden bg-black/50">
+                  <Image
+                    src={lightbox.credential}
+                    alt={lightbox.title}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 70vw"
+                    quality={95}
+                    priority
+                  />
+                </div>
+              </motion.div>
+            </>
+          )}
         </AnimatePresence>
       </div>
     </section>

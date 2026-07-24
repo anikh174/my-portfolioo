@@ -90,7 +90,7 @@ const Contact = () => {
               <div className="flex gap-2">
                 {[
                   { icon: Github, href: "https://github.com/anikh174" },
-                  { icon: Linkedin, href: "https://www.linkedin.com/in/anik-hossain174/" },
+                  { icon: Linkedin, href: "https://www.linkedin.com/in/anik-hossain174" },
                   { icon: Facebook, href: "https://www.facebook.com/anik.hossain.174" },
                   { icon: Instagram, href: "https://www.instagram.com/ah_mekail" },
                 ].map(({ icon: Icon, href }, i) => (
