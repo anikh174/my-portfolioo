@@ -1,14 +1,19 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
-import { LanguageProvider } from "@/context/LanguageContext";
-import CustomCursor from "@/components/layout/CustomCursor";
+import CustomCursor from "@/components/ui/CustomCursor";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Anik Hossain | Creative Frontend Developer",
-  description: "Modern portfolio of Anik Hossain, a frontend developer specializing in building premium web experiences.",
+  title: "Anik Hossain | Full-Stack Developer",
+  description: "Portfolio of Anik Hossain — MERN Stack developer building fast, accessible, and beautiful web applications.",
+  keywords: ["Anik Hossain", "MERN Stack", "Next.js", "React", "Portfolio", "Web Developer", "Dhaka"],
+  openGraph: {
+    title: "Anik Hossain | Full-Stack Developer",
+    description: "MERN Stack developer building fast, accessible, and beautiful web applications.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -21,10 +26,8 @@ export default function RootLayout({ children }) {
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            <CustomCursor />
+          <CustomCursor />
             {children}
-          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,38 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-signature: "Dancing Script", cursive;
   --color-primary: hsl(var(--primary));
   --color-secondary: #10b981;
-  --color-accent: #f59e0b;
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
   --color-border: hsl(var(--border));
-  
-  --color-glass: rgba(var(--glass-rgb), 0.1);
-  --color-glass-border: rgba(var(--glass-rgb), 0.2);
-  
-  --font-sans: 'Inter', sans-serif;
-  
-  --animate-typing: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+  --font-sans: "Inter", sans-serif;
 }
 
 @layer base {
   :root {
-    --background: 210 40% 98%; /* Soft slate white */
-    --foreground: 222 47% 11%; /* Deep slate black */
-    --primary: 239 84% 67%; /* Vibrant Indigo */
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --primary: 239 84% 67%;
     --border: 214 32% 91%;
-    --glass-rgb: 0, 0, 0;
   }
 
   .dark {
-    --background: 240 10% 4%; /* Near black */
+    --background: 240 10% 4%;
     --foreground: 0 0% 100%;
     --primary: 239 84% 67%;
     --border: 240 5% 15%;
-    --glass-rgb: 255, 255, 255;
   }
 
   * {
@@ -42,88 +31,136 @@
   body {
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    @apply overflow-x-hidden;
-    transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-x: hidden;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
-  
-  /* Animated Background Mesh */
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle at 0% 0%, hsla(var(--primary) / 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, hsla(var(--primary) / 0.05) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
-  }
 
-  body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("https://grainy-gradients.vercel.app/noise.svg");
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 9999;
-    filter: contrast(120%) brightness(100%);
-    mix-blend-mode: overlay;
+  html {
+    scroll-behavior: smooth;
   }
 }
 
 @layer utilities {
   .glass {
-    @apply backdrop-blur-xl border transition-all duration-300;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid hsla(var(--foreground) / 0.06);
     background-color: hsla(var(--background) / 0.7);
-    border-color: hsla(var(--foreground) / 0.05);
-    box-shadow: 0 8px 32px 0 hsla(0, 0%, 0%, 0.05);
+    transition: all 0.3s ease;
   }
 
   .glass-dark {
-    @apply backdrop-blur-2xl border transition-all duration-300;
-    background-color: hsla(var(--background) / 0.85);
-    border-color: hsla(var(--foreground) / 0.1);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid hsla(var(--foreground) / 0.08);
+    background-color: hsla(var(--background) / 0.88);
+    transition: all 0.3s ease;
   }
-  
+
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(135deg, hsl(239 84% 67%), hsl(280 80% 60%), hsl(330 80% 60%));
   }
-  
-  .bg-mesh {
-    @apply relative overflow-hidden;
-  }
-  
-  .bg-mesh::before {
-    content: '';
-    @apply absolute inset-0 -z-10 opacity-30 blur-[100px] animate-pulse;
-    background: radial-gradient(circle at 20% 30%, hsla(var(--primary) / 0.4), transparent 50%),
-                radial-gradient(circle at 80% 70%, hsla(280, 80%, 60%, 0.3), transparent 50%);
+
+  .section-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, hsla(var(--foreground) / 0.06) 50%, transparent 100%);
+    max-width: 80%;
+    margin: 0 auto;
   }
 }
 
-@keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+/* Orbit animation */
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: orange; }
+@keyframes counter-spin {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(-360deg); }
 }
 
-@keyframes progress-bar {
-  from { width: 100% }
-  to { width: 0% }
+.orbit-ring {
+  animation: orbit-spin 25s linear infinite;
 }
 
-.animate-progress-bar {
-  animation: progress-bar 5s linear forwards;
+.orbit-item {
+  animation: counter-spin 25s linear infinite;
+}
+
+/* Disable orbit on pointer:coarse devices (mobile/tablet) */
+@media (pointer: coarse) {
+  .orbit-ring { display: none !important; }
+}
+
+/* Optional: also disable if prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .orbit-ring { animation: none !important; }
+  .orbit-item { animation: none !important; }
+}
+
+/* Custom cursor */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: hsl(var(--primary));
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, background 0.2s ease;
+  will-change: transform;
+}
+
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid hsla(var(--primary) / 0.4);
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s ease, height 0.25s ease, border-color 0.25s ease;
+  will-change: transform;
+}
+
+.cursor-hover .cursor-ring {
+  width: 52px;
+  height: 52px;
+  border-color: hsl(var(--primary));
+}
+
+.cursor-hover .cursor-dot {
+  transform: translate(-50%, -50%) scale(2);
+}
+
+/* Hide custom cursor on touch devices */
+@media (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none !important; }
+}
+
+/* Project cards — hover overlay on desktop, always-visible button on touch */
+@media (pointer: fine) {
+  .project-mobile-btn { display: none !important; }
+}
+
+@media (pointer: coarse) {
+  .project-hover-overlay { display: none !important; }
 }
 
 /* Lenis smooth scroll */
@@ -141,8 +178,4 @@ html.lenis {
 
 .lenis.lenis-stopped {
   overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-  pointer-events: none;
 }

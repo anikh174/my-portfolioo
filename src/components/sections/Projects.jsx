@@ -1,293 +1,206 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { ExternalLink, Github, Folder, Filter } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { motion, AnimatePresence } from "framer-motion";
+import { ExternalLink, Github, Folder, X } from "lucide-react";
 
 const projects = [
   {
     id: 1,
-    title: "SkillSphere",
-    category: "Web",
-    image: "https://couponswala.com/blog/wp-content/uploads/2022/01/SKILLSHARE-free-courses.jpg",
-    description: "A curated collection of my technical abilities, tools, and technologies I use to build modern, interactive, and scalable web experiences.",
-    tech: ["Next.js", "Tailwind", "MongoDB"],
-    live: "https://skillsphere-flame.vercel.app/",
-    github: "https://github.com/anikh174/SkillSphere"
+    title: "AI Travel Planner",
+    category: "Fullstack",
+    image: "https://media.foratravel.com/image/upload/v1729871097/contentful-migration/blogPosts/featuredImage/yjxsl5weafffj9suot5u.jpg",
+    description: "An AI-powered travel planning web application that helps users generate personalized travel itineraries based on their destination, budget, travel style, and trip duration.",
+    tech: ["Next.js", "React.js", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "Better Auth"],
+    live: "https://ai-travel-planer-eta.vercel.app/",
+    githubClient: "https://github.com/anikh174/ai-travel-planer",
+    githubServer: "https://github.com/anikh174/ai-travel-planer-server"
   },
   {
     id: 2,
-    title: "KeenKeeper",
-    category: "Web",
-    image: "https://pbs.twimg.com/media/HGbWzapbwAAmYfj.jpg",
-    description: "Next-gen e-commerce interface focusing on smooth transitions and glassmorphism.",
-    tech: ["React", "Styled Components", "Tailwind"],
-    live: "https://keenkeeper-next.vercel.app/",
-    github: "https://github.com/anikh174/KeenKeeper"
+    title: "TicketBari",
+    category: "Fullstack",
+    image: "https://statics.vinpearl.com/international-travel-0_1684821084.jpg",
+    description: "A full-stack event ticket booking platform that allows users to discover, book, and manage event tickets online with role-based dashboards and Stripe payments.",
+    tech: ["React.js", "Tailwind CSS", "Node.js", "Express.js", "MongoDB", "JWT", "Stripe"],
+    live: "https://ticket-barii.vercel.app/",
+    githubClient: "https://github.com/anikh174/ticket-barii",
+    githubServer: "https://github.com/anikh174/ticketbari-server"
   },
   {
     id: 3,
-    title: "DevNexus Platform",
+    title: "Paws & Claws",
     category: "Fullstack",
-    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-    description: "A collaborative platform for developers to share code snippets and projects.",
-    tech: ["Next.js", "Node.js", "MongoDB", "Prisma"],
-    live: "#",
-    github: "#"
-  },
-  {
-    id: 4,
-    title: "Digi-tools",
-    category: "Web",
-    image: "https://www.ssl2buy.com/wp-content/uploads/2023/08/discover-the-best-al-tools-best-practices-to-use-it-safely.jpg",
-    description: "A collection of modern AI-powered utilities designed to enhance productivity, automate tasks, and deliver intelligent assistance with speed and simplicity.",
-    tech: ["React", "Tailwind"],
-    live: " https://digi-tools-174.netlify.app/",
-    github: "https://github.com/anikh174/a6-digi-tools"
+    image: "https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=800&q=80",
+    description: "A comprehensive pet adoption web application connecting loving families with pets in need of a home, featuring an admin analytics dashboard with Recharts.",
+    tech: ["Next.js 15", "TypeScript", "Tailwind CSS", "MongoDB", "Better Auth", "Recharts"],
+    live: "https://paws-claws-beta.vercel.app/",
+    githubClient: "https://github.com/anikh174/Paws-Claws",
+    githubServer: "https://github.com/anikh174/Paws-Claws-Server"
   }
 ];
 
-const categories = ["All", "Web", "UI", "Fullstack"];
-
-const ProjectCard = ({ project, onClick }) => {
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  const mouseXSpring = useSpring(x);
-  const mouseYSpring = useSpring(y);
-
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["17.5deg", "-17.5deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17.5deg", "17.5deg"]);
-
-  const handleMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    const xPct = mouseX / width - 0.5;
-    const yPct = mouseY / height - 0.5;
-    x.set(xPct);
-    y.set(yPct);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+const Projects = () => {
+  const [selected, setSelected] = useState(null);
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.4 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={() => onClick(project)}
-      style={{
-        rotateY,
-        rotateX,
-        transformStyle: "preserve-3d",
-      }}
-      className="group relative glass rounded-[2rem] overflow-hidden border border-white/5 cursor-pointer"
-    >
-      <div 
-        style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
-        className="relative aspect-video overflow-hidden"
-      >
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
-          <div className="flex gap-4" style={{ transform: "translateZ(75px)" }}>
-            <div className="p-3 bg-white text-black rounded-full hover:bg-primary hover:text-white transition-colors">
-              <ExternalLink size={20} />
-            </div>
-            <div className="p-3 glass text-white rounded-full hover:bg-primary transition-colors">
-              <Github size={20} />
-            </div>
-          </div>
+    <section id="projects" className="py-24">
+      <div className="container mx-auto px-6">
+        <div className="text-center mb-16">
+          <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-3">Portfolio</p>
+          <h2 className="text-3xl md:text-5xl font-black tracking-tight">
+            Featured <span className="text-gradient">Creations</span>
+          </h2>
+          <p className="text-sm text-foreground/40 mt-4 max-w-lg mx-auto">A selection of my recent works where design meets engineering.</p>
         </div>
-      </div>
-      
-      <div className="p-8" style={{ transform: "translateZ(30px)" }}>
-        <div className="flex justify-between items-start mb-4">
-          <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-[0.2em] rounded-full border border-primary/20">
-            {project.category}
-          </span>
-          <Folder size={18} className="text-foreground/20" />
-        </div>
-        <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
-        <p className="text-foreground/50 text-sm mb-6 leading-relaxed">
-          {project.description}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {project.tech.map((t) => (
-            <span key={t} className="text-[10px] text-foreground/40 font-medium">#{t}</span>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects.map((project, i) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              onClick={() => setSelected(project)}
+              className="glass rounded-2xl overflow-hidden cursor-pointer group hover:border-primary/15 transition-all duration-300"
+            >
+              <div className="relative aspect-video overflow-hidden">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+
+                {/* Desktop: hover overlay */}
+                <div className="project-hover-overlay absolute inset-0 bg-black/50 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center">
+                    <ExternalLink size={20} className="text-primary" />
+                  </div>
+                  <span className="text-sm font-bold text-white tracking-wide">Click Me for Details</span>
+                </div>
+
+                {/* Mobile: always-visible button */}
+                <div className="project-mobile-btn absolute inset-x-0 bottom-0 p-4 bg-gradient-to-t from-black/70 to-transparent flex justify-center">
+                  <span className="px-5 py-2 bg-primary text-white text-xs font-bold uppercase tracking-wider rounded-lg">
+                    View Details
+                  </span>
+                </div>
+              </div>
+
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-1 rounded-full">
+                    {project.category}
+                  </span>
+                  <Folder size={14} className="text-foreground/15" />
+                </div>
+                <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+                <p className="text-xs text-foreground/40 leading-relaxed mb-4 line-clamp-2">{project.description}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {project.tech.slice(0, 5).map((t) => (
+                    <span key={t} className="text-[9px] font-semibold text-foreground/30 uppercase tracking-wider">#{t}</span>
+                  ))}
+                  {project.tech.length > 5 && (
+                    <span className="text-[9px] font-semibold text-primary/50">+{project.tech.length - 5}</span>
+                  )}
+                </div>
+              </div>
+            </motion.div>
           ))}
         </div>
-      </div>
-    </motion.div>
-  );
-};
 
-const Projects = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedProject, setSelectedProject] = useState(null);
-  const { t } = useLanguage();
-
-  const filteredProjects = activeCategory === "All" 
-    ? projects 
-    : projects.filter(p => p.category === activeCategory);
-
-  return (
-    <section id="projects" className="py-24 relative">
-      <div className="container mx-auto px-6">
-        {/* ... (Header and filters remain) */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
-          <div>
-            <h2 className="text-4xl md:text-6xl font-black tracking-tighter mb-4">
-              {t("projects.title")}
-            </h2>
-            <p className="text-foreground/50 max-w-xl">
-              {t("projects.description")}
-            </p>
-          </div>
-          
-          <div className="flex flex-wrap gap-2 glass p-2 rounded-2xl border border-white/5">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-6 py-2 rounded-xl text-sm font-bold transition-all ${
-                  activeCategory === cat 
-                  ? "bg-primary text-white shadow-lg shadow-primary/20" 
-                  : "hover:bg-white/5 text-foreground/60"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <motion.div 
-          layout
-          className="grid md:grid-cols-2 gap-8"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project) => (
-              <ProjectCard key={project.id} project={project} onClick={setSelectedProject} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Project Modal */}
+        {/* Modal */}
         <AnimatePresence>
-          {selectedProject && (
+          {selected && (
             <>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                onClick={() => setSelectedProject(null)}
-                className="fixed inset-0 bg-black/80 backdrop-blur-xl z-[2000] cursor-pointer"
+                onClick={() => setSelected(null)}
+                className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[2000]"
               />
               <motion.div
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                className="fixed inset-4 md:inset-20 glass-dark border border-white/10 rounded-[3rem] z-[2001] overflow-hidden flex flex-col md:flex-row"
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                className="fixed inset-0 z-[2001] flex items-end sm:items-center justify-center p-0 sm:p-4 md:p-8 lg:p-12"
               >
-                <div className="md:w-1/2 h-64 md:h-full relative overflow-hidden">
-                  <Image
-                    src={selectedProject.image}
-                    alt={selectedProject.title}
-                    fill
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-                </div>
-                
-                <div className="md:w-1/2 p-8 md:p-16 overflow-y-auto flex flex-col justify-center">
+                <div className="glass-dark rounded-t-2xl sm:rounded-2xl w-full sm:max-w-3xl md:max-w-4xl max-h-[92vh] sm:max-h-[85vh] overflow-hidden flex flex-col">
+                  {/* Close button */}
                   <button
-                    onClick={() => setSelectedProject(null)}
-                    className="absolute top-8 right-8 w-12 h-12 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-all"
+                    onClick={() => setSelected(null)}
+                    className="absolute top-3 right-3 sm:top-4 sm:right-4 w-9 h-9 glass rounded-full flex items-center justify-center hover:bg-white/10 transition-colors z-10"
                   >
-                    <Filter className="rotate-45" size={24} />
+                    <X size={16} />
                   </button>
-                  
-                  <span className="text-primary text-xs font-bold uppercase tracking-widest mb-4">
-                    {selectedProject.category} Project
-                  </span>
-                  <h3 className="text-4xl md:text-6xl font-black mb-8 tracking-tighter">
-                    {selectedProject.title}
-                  </h3>
-                  <p className="text-foreground/60 text-lg mb-10 leading-relaxed">
-                    {selectedProject.description}
-                    <br /><br />
-                    This project is a focused exploration of modern frontend architecture, with strong emphasis on accessibility, performance optimization, and delivering a smooth, intuitive user experience. It leverages the latest development tools and best practices to build a clean, efficient, and high-quality web application.
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-4 mb-12">
-                    {selectedProject.tech.map((t) => {
-                      const slug = t.toLowerCase().replace(/ /g, "").replace(/\.js/g, "dotjs");
-                      return (
-                        <span key={t} className="px-4 py-2 glass rounded-full text-xs font-bold border border-white/5 flex items-center gap-2">
-                          <Image 
-                            src={`https://cdn.simpleicons.org/${slug === 'tailwindcss' ? 'tailwindcss' : slug}`} 
-                            alt={t}
-                            width={16}
-                            height={16}
-                            className="w-4 h-4 brightness-200"
-                            onError={(e) => e.target.style.display = 'none'}
-                          />
-                          {t}
-                        </span>
-                      );
-                    })}
+
+                  {/* Image */}
+                  <div className="relative w-full h-48 sm:h-56 md:h-64 shrink-0">
+                    <Image src={selected.image} alt={selected.title} fill className="object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                    <div className="absolute bottom-4 left-5 sm:left-6">
+                      <span className="text-[10px] font-bold uppercase tracking-widest text-primary bg-black/50 backdrop-blur-sm px-2.5 py-1 rounded-full">
+                        {selected.category}
+                      </span>
+                    </div>
                   </div>
-                  
-                  <div className="flex gap-4">
-                    <a 
-                      href={selectedProject.live} 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-8 py-4 bg-primary text-white rounded-2xl font-bold flex items-center gap-2 hover:opacity-90 transition-all"
-                    >
-                      Live Demo <ExternalLink size={18} />
-                    </a>
-                    <a 
-                      href={selectedProject.github} 
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-8 py-4 glass border border-white/10 rounded-2xl font-bold hover:bg-white/10 transition-all flex items-center gap-2"
-                    >
-                      GitHub <Github size={18} />
-                    </a>
+
+                  {/* Content */}
+                  <div className="flex-1 overflow-y-auto p-5 sm:p-6 md:p-8">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-black mb-3 tracking-tight">{selected.title}</h3>
+                    <p className="text-sm sm:text-[15px] text-foreground/50 leading-relaxed mb-5">{selected.description}</p>
+
+                    {/* Tech stack */}
+                    <div className="mb-6">
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/30 mb-3">Tech Stack</p>
+                      <div className="flex flex-wrap gap-2">
+                        {selected.tech.map((t) => {
+                          const slug = t.toLowerCase().replace(/ /g, "").replace(/\.js/g, "dotjs");
+                          return (
+                            <span key={t} className="px-3 py-1.5 glass rounded-full text-[11px] font-semibold flex items-center gap-1.5">
+                              <img src={`https://cdn.simpleicons.org/${slug === "tailwindcss" ? "tailwindcss" : slug}`} alt="" className="w-3 h-3 brightness-200" onError={(e) => e.target.style.display = "none"} />
+                              {t}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Action buttons */}
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <a href={selected.live} target="_blank" rel="noopener noreferrer"
+                        className="px-6 py-3 bg-primary text-white rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:shadow-lg hover:shadow-primary/20 transition-all">
+                        Live Demo <ExternalLink size={14} />
+                      </a>
+                      <a href={selected.githubClient} target="_blank" rel="noopener noreferrer"
+                        className="px-6 py-3 glass rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-foreground/5 transition-all">
+                        Client <Github size={14} />
+                      </a>
+                      <a href={selected.githubServer} target="_blank" rel="noopener noreferrer"
+                        className="px-6 py-3 glass rounded-xl font-semibold text-sm flex items-center justify-center gap-2 hover:bg-foreground/5 transition-all">
+                        Server <Github size={14} />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </motion.div>
             </>
           )}
         </AnimatePresence>
-        
-        <div className="mt-20 text-center">
-          <motion.a
+
+        <div className="mt-14 text-center">
+          <a
             href="https://github.com/anikh174?tab=repositories"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 text-primary font-bold hover:gap-4 transition-all"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:gap-3 transition-all"
           >
-            View All Projects on GitHub <Github size={20} />
-          </motion.a>
+            View All on GitHub <Github size={16} />
+          </a>
         </div>
       </div>
     </section>
