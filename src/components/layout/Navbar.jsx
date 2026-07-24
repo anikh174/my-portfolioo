@@ -29,14 +29,23 @@ const Navbar = () => {
     const onScroll = () => {
       setScrolled(window.scrollY > 50);
       const ids = navLinks.map((l) => l.href.replace("#", ""));
-      for (let i = ids.length - 1; i >= 0; i--) {
-        const el = document.getElementById(ids[i]);
-        if (el && el.getBoundingClientRect().top <= 120) {
-          setActive(ids[i]);
-          return;
+      let best = "";
+      let bestDist = Infinity;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        // Section is considered "in view" if its top is within 150px of viewport top
+        // and its bottom hasn't scrolled past the viewport top
+        if (rect.top <= 150 && rect.bottom > 0) {
+          const dist = Math.abs(rect.top);
+          if (dist < bestDist) {
+            bestDist = dist;
+            best = id;
+          }
         }
       }
-      setActive("");
+      setActive(best);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
